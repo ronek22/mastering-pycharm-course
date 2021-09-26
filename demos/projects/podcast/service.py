@@ -1,10 +1,19 @@
-from collections import namedtuple
-from typing import Optional, Dict
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Dict, Optional
 from xml.etree import ElementTree
 
 import requests
 
-Episode = namedtuple('Episode', 'title, link, date, id')
+
+@dataclass
+class Episode:
+    title: str
+    link: str
+    date: datetime
+    id: int
+
+
 episodes: Dict[int, Episode] = {}
 
 
@@ -28,6 +37,8 @@ def download_info():
 
         episodes[e.id] = e
 
+    print(episodes)
+
 
 def get_min_episode_id() -> int:
     return min(episodes.keys())
@@ -39,7 +50,7 @@ def get_max_episode_id() -> int:
 
 def get_details(episode_id: int) -> Optional[Episode]:
     """
-    This will return the episode details for the episode with ID episode_id.
+    This will return the episode details for the episode with ID episode_id
 
     :param episode_id: The ID of the episode as an int.
     :return: The episode details if found, otherwise None.
